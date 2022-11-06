@@ -8,8 +8,9 @@ class PlayersTable extends TableBase {
         this.keys = {
             id: "INT AUTO_INCREMENT PRIMARY KEY",
             name: "CHAR(30) NOT NULL UNIQUE",
-            kills: "INT NOT NULL",
-            deaths: "INT NOT NULL"
+            discord_id: "INT NOT NULL UNIQUE",
+            kills: "INT NOT NULL DEFAULT 0",
+            deaths: "INT NOT NULL DEFAULT 0"
         };
     }
 }

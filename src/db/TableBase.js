@@ -21,26 +21,25 @@ class TableBase {
     }
 
     newRow(obj) {
-        let query = `INSERT INTO ${this.name} VALUES(`;
+        let keysQuery = `INSERT INTO ${this.name} (`;
+        let valuesQuery = ") VALUES(";
         let values = [];
         let i = 0;
 
-        for (let originalKey in this.keys) {
-            if (!obj[originalKey]) {
-                values.push(null);
-            } else {
-                values.push(obj[originalKey]);
-            }
+        for (let key in obj) {
+            keysQuery+=key;
+            valuesQuery+="?";
+            values.push(obj[key]);
 
-            query+="?";
-            if (i < Object.keys(this.keys).length-1)
-                query+=",";
+            if (i < Object.keys(obj).length-1) {
+                keysQuery+=",";
+                valuesQuery+=",";
+            }
 
             i+=1;
         }
 
-        query+=");";
-
+        let query = keysQuery+valuesQuery+");";
         this.db.exec(query, values);
     }
 }

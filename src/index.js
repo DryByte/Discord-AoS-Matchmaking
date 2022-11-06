@@ -21,9 +21,22 @@ client.once("ready", () => {
     pt.initTable();
     pt.newRow({
         name: "cRaudio666",
+        discord_id: 69,
         kills: 8,
         deaths: 4
     });
+    pt.newRow({
+        name: "fds",
+    });
+    pt.newRow({});
+    pt.newRow({
+        kills: 0,
+    });
+    pt.newRow({
+        name: "zé ramalho",
+        discord_id: 24
+    });
+
 });
 
 client.login(DISCORD_TOKEN);
