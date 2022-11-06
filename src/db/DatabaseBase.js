@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const fs = require("fs");
 const {
     DB_HOST,
     DB_PORT,
@@ -9,6 +10,7 @@ const {
 
 class DatabaseBase {
     constructor() {
+        this.tables = {};
         this.connection = mysql.createConnection({
             host: DB_HOST,
             port: DB_PORT,
@@ -25,7 +27,19 @@ class DatabaseBase {
             }
 
             console.log("[DATABASE] Database connection has been stabilished.");
+            this.createTables();
         });
+    }
+
+    createTables() {
+        let files = fs.readdirSync("./src/db/tables");
+        for (let file of files) {
+            let table = require(`./tables/${file}`);
+            let tableClass = new table(this);
+            tableClass.initTable();
+
+            this.tables[tableClass.name] = tableClass;
+        }
     }
 
     exec(query, values) {

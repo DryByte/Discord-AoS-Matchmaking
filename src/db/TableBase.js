@@ -18,6 +18,26 @@ class TableBase {
         query+=");";
 
         this.db.exec(query);
+        this.updateTableColumns();
+    }
+
+    updateTableColumns() {
+        this.db.exec("DESCRIBE players;").then(columns => {
+            if (columns.length < Object.keys(this.keys).length) {
+                for (let key in this.keys) {
+                    if(!columns.find(i=>i.Field==key))
+                        this.db.exec(`ALTER TABLE ${this.name}
+                                      ADD COLUMN ${key} ${this.keys[key]};`);
+                }
+
+            } else if (columns.length > Object.keys(this.keys).length) {
+                for (let column of columns) {
+                    if (!this.keys[column.Field])
+                        this.db.exec(`ALTER TABLE ${this.name}
+                                      DROP COLUMN ${column.Field}`);
+                }
+            }
+        });
     }
 
     newRow(obj) {
