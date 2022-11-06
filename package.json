@@ -1,0 +1,23 @@
+{
+  "name": "discord-aos-matchmaking",
+  "version": "0.0.0",
+  "description": "Discord bot to play competitive matchs in Ace of Spades",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DryByte/Discord-AoS-Matchmaking.git"
+  },
+  "author": "DryByte",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DryByte/Discord-AoS-Matchmaking/issues"
+  },
+  "homepage": "https://github.com/DryByte/Discord-AoS-Matchmaking#readme",
+  "dependencies": {
+    "discord.js": "^14.6.0",
+    "mysql": "^2.18.1"
+  }
+}
