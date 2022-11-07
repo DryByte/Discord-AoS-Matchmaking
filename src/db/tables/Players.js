@@ -10,7 +10,8 @@ class PlayersTable extends TableBase {
             name: "CHAR(30) NOT NULL UNIQUE",
             discord_id: "INT NOT NULL UNIQUE",
             kills: "INT NOT NULL DEFAULT 0",
-            deaths: "INT NOT NULL DEFAULT 0"
+            deaths: "INT NOT NULL DEFAULT 0",
+            creation_date: "DATE DEFAULT CURRENT_TIMESTAMP"
         };
     }
 }

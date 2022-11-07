@@ -1,6 +1,10 @@
 class TableBase {
     constructor(db){
         this.db = db;
+
+        this.keys = {};
+        this.constraints = {};
+        this.depends = [];
     }
 
     initTable() {
@@ -15,14 +19,17 @@ class TableBase {
             i+=1;
         }
 
+        for (let constraint in this.constraints) {
+            query+=`,CONSTRAINT ${constraint} ${this.constraints[constraint]}`;
+        }
+
         query+=");";
 
-        this.db.exec(query);
-        this.updateTableColumns();
+        this.db.exec(query).then(() => this.updateTableColumns());
     }
 
     updateTableColumns() {
-        this.db.exec("DESCRIBE players;").then(columns => {
+        this.db.exec(`DESCRIBE ${this.name};`).then(columns => {
             if (columns.length < Object.keys(this.keys).length) {
                 for (let key in this.keys) {
                     if(!columns.find(i=>i.Field==key))
