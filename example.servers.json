@@ -1,0 +1,7 @@
+[
+	{
+		"identifier": "",
+		"port_range": [25565, 32887],
+		"proxy_port": 45000,
+	}
+]

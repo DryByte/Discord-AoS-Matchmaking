@@ -11,15 +11,15 @@ const client = new Client({
     }
 });
 
-const dbClass = require("./managers/DatabaseManager.js");
-const db = new dbClass();
+//const dbClass = require("./managers/DatabaseManager.js");
+//const db = new dbClass();
+
+const GMC = require("./managers/GameManager.js");
+const GM = new GMC();
 
 client.once("ready", () => {
     console.log("[DISCORD] Bot online!");
-    db.tables.players.newRow({
-        name: "fodase?",
-        discord_id: 69
-    });
+    GM.newServer();
 });
 
 client.login(DISCORD_TOKEN);
