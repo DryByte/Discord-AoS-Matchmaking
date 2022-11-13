@@ -6,7 +6,8 @@ const MASTER_PORT = 32886;
 const addr = new enet.Address(MASTER_IP, MASTER_PORT);
 
 class Master {
-    constructor() {
+    constructor(proxy) {
+        this.proxy = proxy;
         this.peer;
     };
 
@@ -27,17 +28,17 @@ class Master {
     };
 
     updateMasterInfos() {
-        let nameLength = this.infos.name.length+1;
-        let gameLength = this.infos.game.length+1;
-        let mapLength = this.infos.map.length+1;
+        let nameLength = this.proxy.infos.name.length+1;
+        let gameLength = this.proxy.infos.game.length+1;
+        let mapLength = this.proxy.infos.map.length+1;
         let fullSize = nameLength+gameLength+mapLength;
 
         let majorPacket = Buffer.alloc(4+fullSize);
         majorPacket.writeUInt8(16,0);
-        majorPacket.writeUInt16LE(this.port,1);
-        majorPacket.write(this.infos.name, 3, nameLength);
-        majorPacket.write(this.infos.game, 3+nameLength, gameLength);
-        majorPacket.write(this.infos.map, 3+fullSize-mapLength, mapLength);
+        majorPacket.writeUInt16LE(this.proxy.port,1);
+        majorPacket.write(this.proxy.infos.name, 3, nameLength);
+        majorPacket.write(this.proxy.infos.game, 3+nameLength, gameLength);
+        majorPacket.write(this.proxy.infos.map, 3+fullSize-mapLength, mapLength);
 
         let mp = new enet.Packet(majorPacket, enet.PACKET_FLAG.UNRELIABLE);
         this.peer.send(0, mp);

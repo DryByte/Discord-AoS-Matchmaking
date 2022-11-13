@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/DryByte/Discord-AoS-Matchmaking#readme",
   "dependencies": {
+    "aos.js": "github:DryByte/AoS.js",
     "discord.js": "^14.6.0",
     "enet": "^0.2.9",
     "mysql": "^2.18.1"

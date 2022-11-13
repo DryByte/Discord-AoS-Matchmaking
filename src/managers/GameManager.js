@@ -67,7 +67,8 @@ class GameManager {
 
         server.port = port;
         server.startServer("ctf5v5");
-        console.log(server)
+        console.log(server);
+        server.proxy.AoSTV.connect("127.0.0.1", port);
     }
 }
 

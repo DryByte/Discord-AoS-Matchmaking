@@ -14,12 +14,12 @@ class Server {
         // port will change
         this.port = 0;
 
-        this.server;
+        this.serverProcess;
         this.proxy;
     }
 
     startProxy() {
-        //this.proxy = new Proxy(this.proxy_port);
+        this.proxy = new Proxy(this.proxy_port);
     }
 
     createServerFolder() {
@@ -72,6 +72,14 @@ class Server {
         }
 
         this.configServer(serverConfig.game_mode, serverConfig.scripts);
+
+        let serverPath = `./servers/${this.identifier}`;
+        serverConfig.port = this.port;
+        this.serverProcess = spawn(`piqueserver`, ["-j", JSON.stringify(serverConfig), "-d", serverPath]);
+
+        this.serverProcess.stdout.on('data', (data) => {
+            console.log(data.toString());
+        });
     }
 }
 

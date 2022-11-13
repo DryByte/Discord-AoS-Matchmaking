@@ -1,6 +1,8 @@
+const ProxyBase = require("./ProxyBase.js");
 const Master = require("./Master.js");
+const AoSTV = require("./AoSTV.js");
 
-class Proxy extends Master {
+class Proxy extends ProxyBase {
     constructor(port) {
         super();
         this.port = port;
@@ -11,7 +13,11 @@ class Proxy extends Master {
             game: "PROXY"
         };
 
-        this.connectMaster();
+        this.master = new Master(this);
+        this.AoSTV = new AoSTV(this);
+
+        this.master.connectMaster();
+        this.createProxy();
     }
 
     setName(name) {
