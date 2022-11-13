@@ -66,7 +66,7 @@ class GameManager {
             return false;
 
         server.port = port;
-        server.startServer();
+        server.startServer("ctf5v5");
         console.log(server)
     }
 }

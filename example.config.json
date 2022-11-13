@@ -1,9 +1,22 @@
 {
-	"DISCORD_TOKEN": "",
+    "DISCORD_TOKEN": "",
 
-	"DB_HOST": "localhost",
-	"DB_PORT": 3306,
-	"DB_DATABASE": "aosdb",
-	"DB_USER": "aosuser",
-	"DB_PASSWORD": ""
+    "DB_HOST": "localhost",
+    "DB_PORT": 3306,
+    "DB_DATABASE": "aosdb",
+    "DB_USER": "aosuser",
+    "DB_PASSWORD": "",
+
+    "SERVER_TYPES": {
+        "ctf5v5": {
+            "max_players": 10,
+            "scripts": ["piqueserver.scripts.afk"],
+            "game_mode": "ctf"
+        },
+        "arena": {
+            "max_players": 6,
+            "scripts": [],
+            "game_mode": "arena"
+        }
+    }
 }

@@ -1,6 +1,7 @@
 const Proxy = require("./Proxy.js");
 const { spawn } = require("child_process");
-const { accessSync, mkdirSync, constants } = require("fs");
+const { accessSync, mkdirSync, constants, copyFileSync } = require("fs");
+const { SERVER_TYPES } = require("../../config.json");
 
 class Server {
     constructor(name, port_range, proxy_port) {
@@ -39,12 +40,38 @@ class Server {
         }
     }
 
-    startServer() {
+    configServer(gameMode, scripts) {
+        for (let script of scripts) {
+            if (script.startsWith("piqueserver."))
+                continue;
+
+            let srcPath = `./server_scripts/scripts/${script}.py`;
+            let dstPath = `./servers/${this.identifier}/scripts/${script}.py`;
+            copyFileSync(srcPath, dstPath);
+        }
+
+        if (gameMode != "ctf" && gameMode != "tc" && !gameMode.startsWith("piqueserver.")) {
+            let srcPath = `./server_scripts/game_modes/${gameMode}.py`;
+            let dstPath = `./servers/${this.identifier}/game_modes/${gameMode}.py`;
+
+            copyFileSync(srcPath, dstPath);
+        }
+    }
+
+    startServer(serverType) {
         let stats = this.createServerFolder();
         if (!stats) {
             console.log(`Can't start server ${this.identifier}.`);
             return false;
         }
+
+        let serverConfig = SERVER_TYPES[serverType];
+        if (!serverConfig) {
+            console.log(`${serverType} not exists in config.`);
+            return false;
+        }
+
+        this.configServer(serverConfig.game_mode, serverConfig.scripts);
     }
 }
 
