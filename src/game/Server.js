@@ -1,6 +1,6 @@
 const Proxy = require("./Proxy.js");
 const { spawn } = require("child_process");
-const { accessSync, mkdirSync, constants, copyFileSync } = require("fs");
+const { access, accessSync, mkdirSync, constants, copyFileSync } = require("fs");
 const { SERVER_TYPES } = require("../../config.json");
 
 class Server {
@@ -40,7 +40,7 @@ class Server {
         }
     }
 
-    configServer(gameMode, scripts) {
+    configServer(gameMode, scripts, maps) {
         for (let script of scripts) {
             if (script.startsWith("piqueserver."))
                 continue;
@@ -48,6 +48,23 @@ class Server {
             let srcPath = `./server_scripts/scripts/${script}.py`;
             let dstPath = `./servers/${this.identifier}/scripts/${script}.py`;
             copyFileSync(srcPath, dstPath);
+        }
+
+        for (let map of maps) {
+            let srcPathVXL = `./server_maps/${map}.vxl`,
+                srcPathTXT = `./server_maps/${map}.txt`;
+            let dstPathVXL = `./servers/${this.identifier}/maps/${map}.vxl`,
+                dstPathTXT = `./servers/${this.identifier}/maps/${map}.txt`;
+
+            access(srcPathTXT, constants.R_OK | constants.W_OK, (err) => {
+                if (err) {
+                    return;
+                }
+
+                copyFileSync(srcPathTXT, dstPathTXT);
+            });
+
+            copyFileSync(srcPathVXL, dstPathVXL);
         }
 
         if (gameMode != "ctf" && gameMode != "tc" && !gameMode.startsWith("piqueserver.")) {
@@ -71,7 +88,7 @@ class Server {
             return false;
         }
 
-        this.configServer(serverConfig.game_mode, serverConfig.scripts);
+        this.configServer(serverConfig.game_mode, serverConfig.scripts, serverConfig.rotation);
 
         let serverPath = `./servers/${this.identifier}`;
         serverConfig.port = this.port;

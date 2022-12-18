@@ -32,12 +32,14 @@ Config example:
         "ctf5v5": { // Name used to show in discord
             "max_players": 10, // Max players for the queue
             "scripts": ["piqueserver.scripts.afk"], // Scripts enabled
-            "game_mode": "ctf" // Gamemode that will be used for the game
+            "game_mode": "ctf", // Gamemode that will be used for the game
+            "rotation": ["classicgen"] // Maps people are able to choose to play (placed in server_maps)
         },
         "arena": {
             "max_players": 6,
             "scripts": [],
-            "game_mode": "arena"
+            "game_mode": "arena",
+            "rotation": []
         }
     }
 }

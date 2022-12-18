@@ -11,12 +11,14 @@
         "ctf5v5": {
             "max_players": 10,
             "scripts": ["piqueserver.scripts.afk"],
-            "game_mode": "ctf"
+            "game_mode": "ctf",
+            "rotation": ["classicgen", "random"]
         },
         "arena": {
             "max_players": 6,
             "scripts": [],
-            "game_mode": "arena"
+            "game_mode": "arena",
+            "rotation": ["classicgen"]
         }
     }
 }
