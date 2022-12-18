@@ -76,10 +76,6 @@ class Server {
         let serverPath = `./servers/${this.identifier}`;
         serverConfig.port = this.port;
         this.serverProcess = spawn(`piqueserver`, ["-j", JSON.stringify(serverConfig), "-d", serverPath]);
-
-        this.serverProcess.stdout.on('data', (data) => {
-            console.log(data.toString());
-        });
     }
 }
 

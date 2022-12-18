@@ -1,11 +1,13 @@
 const enet = require("enet");
 const AoS = require("aos.js");
+const Spectator = require("./Spectator.js");
 
 class ProxyBase {
     constructor() {
         this.host;
 
-        this.queue = [];
+        this.stateData;
+        this.spectators = [];
     }
 
     createProxy() {
@@ -23,14 +25,13 @@ class ProxyBase {
         this.host.enableCompression();
 
         this.host.on("connect", (peer, data) => {
-            console.log("Connectou: ", data);
-            let c = 0;
-            setInterval(() => {
-                if (this.queue[c]) {
-                    peer.send(0, this.queue[c]);
-                }
-                c+=1;
-            }, 10)
+            console.log("Connected: ", data);
+            
+            let spectatorClass = new Spectator(this, peer);
+            this.spectators.push(spectatorClass);
+
+            spectatorClass.sendMap();
+            peer.send(0, this.stateData); // State Data
 
             peer.on("message", packet => {
                 let d = packet.data();
@@ -56,8 +57,8 @@ class ProxyBase {
     }
 
     packetHandler(data) {
-        if (data[0] == 18 || data[0] == 19 || data[0] == 15) {
-            this.queue.push(data);
+        if (data[0] == 15) {
+            this.stateData = data;
         }
 
         for (let peer in this.host.connectedPeers) {
