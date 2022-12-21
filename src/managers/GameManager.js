@@ -65,8 +65,11 @@ class GameManager {
         if (!port)
             return false;
 
+        let GamemodeScript = require(`../../aostv_scripts/ctf5v5.js`);
+        console.log(port);
         server.port = port;
         server.startServer("ctf5v5");
+        server.proxy.AoSTV.gameMode = new GamemodeScript(server.proxy.AoSTV.client);
         server.proxy.AoSTV.connect("127.0.0.1", port);
     }
 }
