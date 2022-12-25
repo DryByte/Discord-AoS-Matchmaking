@@ -9,6 +9,7 @@ class Server {
         this.proxy_port = proxy_port;
         this.port_range = port_range;
         this.running = false;
+        this.passwords = {};
 
         // this info is useless since every time a game ends/starts
         // port will change
@@ -19,7 +20,7 @@ class Server {
     }
 
     startProxy() {
-        this.proxy = new Proxy(this.proxy_port);
+        this.proxy = new Proxy(this);
     }
 
     createServerFolder() {
@@ -75,6 +76,24 @@ class Server {
         }
     }
 
+    generatePasswords(players) {
+        let passwords = {
+            admin: []
+        };
+
+        // later get all players that will play and gen a password
+        // for each player using their discord id as identifier
+        for (let i = 0; i < 16; i++) {
+            if (!passwords.admin[0])
+                passwords.admin[0] = "";
+
+            let asciiCode = Math.round(Math.random()*(126-33)+33);
+            passwords.admin[0] += String.fromCharCode(asciiCode);
+        }
+
+        this.passwords = passwords;
+    }
+
     startServer(serverType) {
         let stats = this.createServerFolder();
         if (!stats) {
@@ -89,9 +108,13 @@ class Server {
         }
 
         this.configServer(serverConfig.game_mode, serverConfig.scripts, serverConfig.rotation);
+        this.generatePasswords();
 
-        let serverPath = `./servers/${this.identifier}`;
+        serverConfig.passwords = this.passwords;
         serverConfig.port = this.port;
+
+        console.log(serverConfig.passwords);
+        let serverPath = `./servers/${this.identifier}`;
         this.serverProcess = spawn(`piqueserver`, ["-j", JSON.stringify(serverConfig), "-d", serverPath]);
     }
 }

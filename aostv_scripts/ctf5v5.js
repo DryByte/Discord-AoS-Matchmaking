@@ -13,10 +13,8 @@ class CTF {
     onServerFull() {}
 
     onReadyToStart() {
-        console.log("hey")
-        console.log(this.client.sendMessage)
-        this.client.sendMessage("/reset", 0);
-        this.client.sendMessage("/say Match started! Good luck!", 0);
+        this.client.sendMessage("/resetgame", 0);
+        this.client.sendMessage("-- Match started! Good luck!", 0);
     }
 
     onCapture() {}

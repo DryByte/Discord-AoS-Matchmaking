@@ -8,7 +8,10 @@ class AoSTV {
     }
 
     stateDataHandler(data) {
+        let password = this.proxy.server.passwords.admin[0];
+
         this.client.joinGame({team: -1});
+        this.client.sendMessage(`/login ${password}`, 1);
     }
 
     connect(ip, port) {

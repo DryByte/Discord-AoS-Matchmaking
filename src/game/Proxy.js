@@ -3,9 +3,10 @@ const Master = require("./Master.js");
 const AoSTV = require("./AoSTV.js");
 
 class Proxy extends ProxyBase {
-    constructor(port) {
+    constructor(server) {
         super();
-        this.port = port;
+        this.port = server.proxy_port;
+        this.server = server;
 
         this.infos = {
             name: "PROXY INSTANCE",
