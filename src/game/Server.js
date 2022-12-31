@@ -112,6 +112,7 @@ class Server {
         serverConfig.passwords = this.generatePasswords();
         serverConfig.port = this.port;
         serverConfig.max_players += 1;
+        serverConfig.advance_on_win = false;
 
         console.log(serverConfig.passwords);
         this.serverConfig = serverConfig;

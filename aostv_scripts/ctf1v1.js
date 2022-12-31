@@ -10,10 +10,7 @@ class CTF extends ScriptBase {
         //this.onReadyToStart();
     }
 
-    onStart() {
-        this.client.sendMessage("/resetgame", 0);
-        this.client.sendMessage("-- Match started! Good luck!", 0);
-    }
+    onStart() {}
 }
 
 module.exports = CTF;

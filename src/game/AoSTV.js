@@ -20,6 +20,19 @@ class AoSTV {
 
         this.client.joinGame({team: -1});
         this.client.sendMessage(`/login ${password}`, 1);
+
+        this.organizeServer();
+    }
+
+    organizeServer() {
+        this.client.sendLines([
+            "/lock blue",
+            "/lock green",
+            "/lock spectator",
+            "/togglebuild",
+            "/togglekill",
+            "/timelimit 300min" // time will be managed by aostv
+        ], 1, 10);
     }
 
     playerJoinHandler(data) {
@@ -29,7 +42,8 @@ class AoSTV {
 
             this.client.sendLines([
                 `/pm #${newPlayerId} Welcome, use /pm #${botId} login <your password>`,
-                `/pm #${newPlayerId} When you feel ready to start, use /pm #${botId} ready`
+                `/pm #${newPlayerId} When you feel ready to start, use /pm #${botId} ready`,
+                `/switch #${newPlayerId}`,
             ], 0, 1000);
 
             if (this.client.getOnlinePlayers().length >= this.proxy.server.serverConfig.max_players) {
@@ -53,6 +67,13 @@ class AoSTV {
 
     startMatch() {
         this.state = "running";
+        this.client.sendLines([
+            "/togglebuild",
+            "/togglekill",
+            "/resetgame",
+            "-- Match started! Good luck!",
+        ], 0, 10);
+
         this.gameMode.onStart();
     }
 
