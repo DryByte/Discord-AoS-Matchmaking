@@ -9,7 +9,7 @@ class Server {
         this.proxy_port = proxy_port;
         this.port_range = port_range;
         this.running = false;
-        this.passwords = {};
+        this.serverConfig = {};
 
         // this info is useless since every time a game ends/starts
         // port will change
@@ -91,7 +91,7 @@ class Server {
             passwords.admin[0] += String.fromCharCode(asciiCode);
         }
 
-        this.passwords = passwords;
+       return passwords;
     }
 
     startServer(serverType) {
@@ -108,12 +108,13 @@ class Server {
         }
 
         this.configServer(serverConfig.game_mode, serverConfig.scripts, serverConfig.rotation);
-        this.generatePasswords();
 
-        serverConfig.passwords = this.passwords;
+        serverConfig.passwords = this.generatePasswords();
         serverConfig.port = this.port;
+        serverConfig.max_players += 1;
 
         console.log(serverConfig.passwords);
+        this.serverConfig = serverConfig;
         let serverPath = `./servers/${this.identifier}`;
         this.serverProcess = spawn(`piqueserver`, ["-j", JSON.stringify(serverConfig), "-d", serverPath]);
     }

@@ -1,12 +1,14 @@
 class ScriptBase {
-	constructor(client) {
-		this.client = client;
-	}
+    constructor(client) {
+        this.client = client;
+    }
 
-	onPlayerJoin() {}
-	onPlayerLeft() {}
-	onKill() {}
-	onReadyToStart() {}
+    onPlayerJoin() {}
+    onPlayerLeft() {}
+    onStart() {}
+
+    onCapture() {}
+    onKill() {}
 }
 
 module.exports = ScriptBase;

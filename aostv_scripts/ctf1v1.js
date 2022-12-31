@@ -7,17 +7,13 @@ class CTF extends ScriptBase {
 
     // Events
     onPlayerJoin(fields) {
-        this.onReadyToStart();
+        //this.onReadyToStart();
     }
 
-    onServerFull() {}
-
-    onReadyToStart() {
+    onStart() {
         this.client.sendMessage("/resetgame", 0);
         this.client.sendMessage("-- Match started! Good luck!", 0);
     }
-
-    onCapture() {}
 }
 
 module.exports = CTF;
