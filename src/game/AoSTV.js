@@ -19,6 +19,8 @@ class AoSTV {
         this.client.on("rawPacket", this.proxy.packetHandler.bind(this.proxy));
 
         this.client.on("PlayerJoin", this.gameMode.onPlayerJoin.bind(this.gameMode));
+        this.client.on("PlayerLeft", this.gameMode.onPlayerLeft.bind(this.gameMode));
+        this.client.on("KillAction", this.gameMode.onKill.bind(this.gameMode));
 
         this.client.connect(`${ip}:${port}`);
     }

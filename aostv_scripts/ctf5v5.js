@@ -1,14 +1,14 @@
-class CTF {
+const ScriptBase = require("./ScriptBase.js");
+
+class CTF extends ScriptBase {
     constructor(client) {
-        this.client = client;
+        super(client);
     }
 
     // Events
     onPlayerJoin(fields) {
         this.onReadyToStart();
     }
-
-    onPlayerLeave() {}
 
     onServerFull() {}
 
