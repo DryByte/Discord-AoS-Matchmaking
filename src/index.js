@@ -1,7 +1,8 @@
-const { DISCORD_TOKEN } = require("../config.json");
+const { DISCORD_TOKEN, CMD_PREFIX } = require("../config.json");
+const { GatewayIntentBits } = require("discord.js");
+const Bot = require("./bot.js");
 
-const { Client, GatewayIntentBits } = require("discord.js");
-const client = new Client({
+const client = new Bot({
     intents: [GatewayIntentBits.Guilds,
               GatewayIntentBits.GuildMessages,
               GatewayIntentBits.MessageContent],
@@ -14,12 +15,13 @@ const client = new Client({
 //const dbClass = require("./managers/DatabaseManager.js");
 //const db = new dbClass();
 
-const GMC = require("./managers/GameManager.js");
-const GM = new GMC();
-
 client.once("ready", () => {
     console.log("[DISCORD] Bot online!");
-    GM.newServer();
+});
+
+client.on("messageCreate", msg => {
+    if (msg.content.toLowerCase().startsWith(CMD_PREFIX.toLowerCase()))
+        client.CommandManager.onCommand(msg);
 });
 
 client.login(DISCORD_TOKEN);
