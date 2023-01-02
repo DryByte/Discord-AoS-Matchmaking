@@ -31,7 +31,7 @@ class Command {
         }
 
         if (alreadyInQueue)
-            return "You is already in a Queue, use !leave";
+            return "You are already in a Queue, use !leave";
         
         queues[args[0]].addPlayer(msgClass.author.id);
 
