@@ -9,18 +9,18 @@ class QueueManager {
 		this.initQueues();
 	}
 
-	addPlayer(queue, player) {
+	addPlayer(queue, playerId) {
 		if (!(queue in this.queues))
 			return false;
 
-		this.queues[queue].addPlayer(player);
+		this.queues[queue].addPlayer(playerId);
 	}
 
-	removePlayer(queue, player) {
+	removePlayer(queue, playerId) {
 		if (!(queue in this.queues))
 			return false;
 
-		this.queues[queue].removePlayer(player);
+		this.queues[queue].removePlayer(playerId);
 	}
 
 	getAvailableQueues() {

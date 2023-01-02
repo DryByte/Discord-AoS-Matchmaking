@@ -42,7 +42,7 @@ class CommandManager {
         if (!this.commands[cmdName])
             return;
 
-        let res = this.commands[cmdName].exec(args);
+        let res = this.commands[cmdName].exec(msgC, args);
 
         if (!res)
             return;

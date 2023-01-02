@@ -6,7 +6,7 @@ class Command {
         this.description = "Show all commands.";
     }
 
-    exec(args) {
+    exec(msgClass, args) {
         let cmdList = this.client.CommandManager.commands;
         let msg = "";
 

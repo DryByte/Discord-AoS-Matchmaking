@@ -6,9 +6,10 @@ class Command {
         this.description = "Join in a queue for match.";
     }
 
-    exec(args) {
-        if (!args[0]) {
-            let queues = this.client.QueueManager.getAvailableQueues();
+    exec(msgClass, args) {
+        let queues = this.client.QueueManager.getAvailableQueues();
+
+        if (!args[0] || !(args[0] in queues)) {
             let msg = "**Available queues:**\n";
 
             let msgArray = [];
@@ -19,6 +20,22 @@ class Command {
 
             return msg+msgArray.join(", ");
         }
+
+        let alreadyInQueue = false;
+        for (let queue in queues) {
+            queue = queues[queue];
+            if (queue.players.includes(msgClass.author.id)) {
+                alreadyInQueue = true;
+                break;
+            }
+        }
+
+        if (alreadyInQueue)
+            return "You is already in a Queue, use !leave";
+        
+        queues[args[0]].addPlayer(msgClass.author.id);
+
+        return `Joined to queue **${args[0]}** (${queues[args[0]].players.length}/${queues[args[0]].max_players})`;
     }
 }
 
