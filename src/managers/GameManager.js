@@ -56,21 +56,38 @@ class GameManager {
         return freeServer;
     }
 
-    newServer() {
-        let server = this.findFreeServer();
-        if (!server)
-            return false
+    newServer(name, players, server) {
+        if (!server) {
+            server = this.findFreeServer();
+
+            if (!server)
+                return false
+        }
 
         let port = this.findFreePort(server.port_range);
         if (!port)
             return false;
 
-        let GamemodeScript = require(`../../aostv_scripts/ctf1v1.js`);
+        let GamemodeScript = require(`../../aostv_scripts/${name}.js`);
         console.log(port);
         server.port = port;
-        server.startServer("ctf1v1");
+        server.startServer(name, players);
         server.proxy.AoSTV.gameMode = new GamemodeScript(server.proxy.AoSTV.client);
         server.proxy.AoSTV.connect("127.0.0.1", port);
+    }
+
+    searchFreeServer() {
+        return new Promise(res => {
+            let loopId = setInterval(() => {
+                console.log("finding...");
+                let server = this.findFreeServer();
+                if (!server)
+                    return false;
+
+                res(server);
+                clearInterval(loopId);
+            }, 1000);
+        });
     }
 }
 

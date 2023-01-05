@@ -9,11 +9,16 @@ class QueueManager {
 		this.initQueues();
 	}
 
-	addPlayer(queue, playerId) {
+	addPlayer(queue, playerId, channelId) {
 		if (!(queue in this.queues))
 			return false;
 
+		this.queues[queue].addChannel(channelId);
 		this.queues[queue].addPlayer(playerId);
+
+		if (this.queues[queue].isFull()) {
+			this.client.readyToStart(this.queues[queue]);
+		}
 	}
 
 	removePlayer(queue, playerId) {

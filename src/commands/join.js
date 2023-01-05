@@ -32,8 +32,8 @@ class Command {
 
         if (alreadyInQueue)
             return "You are already in a Queue, use !leave";
-        
-        queues[args[0]].addPlayer(msgClass.author.id);
+
+        this.client.QueueManager.addPlayer(args[0], msgClass.author.id, msgClass.channel.id);
 
         return `Joined to queue **${args[0]}** (${queues[args[0]].players.length}/${queues[args[0]].max_players})`;
     }

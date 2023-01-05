@@ -81,9 +81,7 @@ class Server {
             admin: []
         };
 
-        // later get all players that will play and gen a password
-        // for each player using their discord id as identifier
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 32; i++) {
             if (!passwords.admin[0])
                 passwords.admin[0] = "";
 
@@ -91,10 +89,20 @@ class Server {
             passwords.admin[0] += String.fromCharCode(asciiCode);
         }
 
+        for (let playerId of players) {
+            for (let i = 0; i < 32; i++) {
+                if (!passwords[playerId])
+                    passwords[playerId] = [""];
+
+                let asciiCode = Math.round(Math.random()*(126-33)+33);
+                passwords[playerId][0] += String.fromCharCode(asciiCode);
+            }
+        }
+
        return passwords;
     }
 
-    startServer(serverType) {
+    startServer(serverType, players) {
         let stats = this.createServerFolder();
         if (!stats) {
             console.log(`Can't start server ${this.identifier}.`);
@@ -109,7 +117,7 @@ class Server {
 
         this.configServer(serverConfig.game_mode, serverConfig.scripts, serverConfig.rotation);
 
-        serverConfig.passwords = this.generatePasswords();
+        serverConfig.passwords = this.generatePasswords(players);
         serverConfig.port = this.port;
         serverConfig.max_players += 1;
         serverConfig.advance_on_win = false;
@@ -118,6 +126,19 @@ class Server {
         this.serverConfig = serverConfig;
         let serverPath = `./servers/${this.identifier}`;
         this.serverProcess = spawn(`piqueserver`, ["-j", JSON.stringify(serverConfig), "-d", serverPath]);
+    }
+
+    waitReadyJoin() {
+        return new Promise(res => {
+            let loopId = setInterval(() => {
+                console.log(this.proxy.AoSTV.client.localPlayerId);
+                if (typeof this.proxy.AoSTV.client.localPlayerId == "undefined")
+                    return;
+
+                clearInterval(loopId);
+                res(true);
+            }, 1000);
+        })
     }
 }
 
