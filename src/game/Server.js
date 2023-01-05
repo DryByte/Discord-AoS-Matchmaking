@@ -2,6 +2,7 @@ const Proxy = require("./Proxy.js");
 const { spawn } = require("child_process");
 const { access, accessSync, mkdirSync, constants, copyFileSync } = require("fs");
 const { SERVER_TYPES } = require("../../config.json");
+const crypto = require("crypto");
 
 class Server {
     constructor(name, port_range, proxy_port) {
@@ -81,22 +82,13 @@ class Server {
             admin: []
         };
 
-        for (let i = 0; i < 32; i++) {
-            if (!passwords.admin[0])
-                passwords.admin[0] = "";
-
-            let asciiCode = Math.round(Math.random()*(126-33)+33);
-            passwords.admin[0] += String.fromCharCode(asciiCode);
-        }
+        passwords.admin[0] = crypto.randomBytes(32).toString("base64");
 
         for (let playerId of players) {
-            for (let i = 0; i < 32; i++) {
-                if (!passwords[playerId])
-                    passwords[playerId] = [""];
+            if (!passwords[playerId])
+                passwords[playerId] = [];
 
-                let asciiCode = Math.round(Math.random()*(126-33)+33);
-                passwords[playerId][0] += String.fromCharCode(asciiCode);
-            }
+            passwords[playerId][0] = crypto.randomBytes(32).toString("base64");
         }
 
        return passwords;
